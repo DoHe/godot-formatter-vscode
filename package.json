@@ -30,6 +30,11 @@
       "type": "object",
       "title": "Godot Formatter",
       "properties": {
+        "godotFormatter.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable the Godot formatter."
+        },
         "godotFormatter.gdscriptFormatterPath": {
           "type": "string",
           "default": "",

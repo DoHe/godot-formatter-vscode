@@ -1,71 +1,31 @@
-# godot-format README
+# godot-format
 
-This is the README for your extension "godot-format". After writing up a brief description, we recommend including the following sections.
+A godot/gdscript formatter extension for VSCode. It uses [GDScript-formatter](https://github.com/GDQuest/GDScript-formatter) by GDQuest.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+This is a standard VSCode formatter and as such supports typical formatter capabilities like the format command or autoformatting on save.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This extension does not ship with the gdscript formatter binaries themselves. You can retrieve them [here](https://github.com/GDQuest/GDScript-formatter/releases). You can either add them to your system's PATH for autodiscovery or specify the path to the executable in the extension settings (see below).
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension supports the following settings:
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- `godotFormatter.enable`: Enable/disable this extension
+- `godotFormatter.gdscriptFormatterPath`: The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH
+- `godotFormatter.useSpaces`: Whether to use spaces. If disabled will use tabs.
+- `godotFormatter.indentSize`: How many spaces to use for indentation. This is only used if `useSpaces` is enabled
+- `godotFormatter.reorderCode`: Whether to allow reordering code chunks, like exported variables vs constants etc
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+None so far
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial test release of Godot Format
