@@ -1,0 +1,81 @@
+{
+  "name": "godot-format",
+  "displayName": "godot-format",
+  "description": "A formatter for Godot/GDScript using GDQuest's gdscript formatter",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.104.0"
+  },
+  "publisher": "DoHe",
+  "categories": [
+    "Formatters"
+  ],
+  "activationEvents": [
+    "onLanguage:gdscript"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "gdscript",
+        "aliases": [
+          "GDScript"
+        ],
+        "extensions": [
+          ".gd"
+        ]
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Godot Formatter",
+      "properties": {
+        "godotFormatter.gdscriptFormatterPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the gdscript-formatter executable. If empty, the executable is expected to be int the system's PATH"
+        },
+        "godotFormatter.useSpaces": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to use spaces for indentation. If false, tabs will be used."
+        },
+        "godotFormatter.indentSize": {
+          "type": "integer",
+          "default": 4,
+          "description": "Number of spaces to use for indentation if 'useSpaces' is true."
+        },
+        "godotFormatter.reorderCode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to reorder code blocks."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.104.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "eslint": "^9.34.0",
+    "typescript": "^5.9.2",
+    "ts-loader": "^9.5.4",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
