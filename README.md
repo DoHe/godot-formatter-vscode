@@ -26,6 +26,10 @@ None so far
 
 ## Release Notes
 
+### 0.0.2
+
+Update extension store metadata
+
 ### 0.0.1
 
 Initial test release of Godot Format
