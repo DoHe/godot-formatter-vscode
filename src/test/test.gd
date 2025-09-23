@@ -11,14 +11,19 @@ var example_var: String = "Example"
 
 func _ready():
 	print("TestClass is ready")
+func broke(:
+	dasjsdal 
 
 
 func test_method():
-	print("Test method called")
+	print("Test method called"
 
-	var a_long_dict := {
-		"key1": "value1",
-		"key2": "value2",
-		"key3": "value3",
-		"key4": "value4",
-	}
+
+)
+
+var a_long_dict := {
+	"key1": "value1",
+	"key2": "value2",
+	"key3": "value3",
+	"key4": "value4",
+}

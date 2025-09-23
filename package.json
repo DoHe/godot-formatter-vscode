@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -49,27 +49,32 @@
         "godotFormatter.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to enable the Godot formatter."
+          "description": "Enable/disable formatting with this extension"
         },
         "godotFormatter.gdscriptFormatterPath": {
           "type": "string",
           "default": "",
-          "description": "Path to the gdscript-formatter executable. If empty, the executable is expected to be int the system's PATH"
+          "description": "The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH. If using PATH, make sure to remove the architecture/platform suffix if you copied the binary from the releases page."
         },
         "godotFormatter.useSpaces": {
           "type": "boolean",
           "default": false,
-          "description": "Whether to use spaces for indentation. If false, tabs will be used."
+          "description": "Whether to use spaces. If disabled will use tabs."
         },
         "godotFormatter.indentSize": {
           "type": "integer",
           "default": 4,
-          "description": "Number of spaces to use for indentation if 'useSpaces' is true."
+          "description": "How many spaces to use for indentation. This is only used if `useSpaces` is enabled"
         },
         "godotFormatter.reorderCode": {
           "type": "boolean",
           "default": false,
-          "description": "Whether to reorder code blocks."
+          "description": "Whether to allow reordering code blocks, like exported variables vs constants etc"
+        },
+        "godotFormatter.safe": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant."
         }
       }
     }

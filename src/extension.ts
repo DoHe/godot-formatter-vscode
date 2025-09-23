@@ -31,6 +31,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private indentSize: number = 4;
 	private useSpaces: boolean = false;
 	private reorderCode: boolean = false;
+	private safe: boolean = false;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 
 	constructor() {
@@ -44,6 +45,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		this.indentSize = config.get<number>("indentSize", 4);
 		this.useSpaces = config.get<boolean>("useSpaces", false);
 		this.reorderCode = config.get<boolean>("reorderCode", false);
+		this.safe = config.get<boolean>("safe", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 	}
 
@@ -62,9 +64,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 				{ encoding: "utf8" },
 				(err, stdout, _) => {
 					if (err) {
-						const error = handleCommandError(err);
-						outputChannel.appendLine(`Linting failed: ${error.message}`);
-						reject(error);
+						reject(handleCommandError(err));
 						return;
 					}
 					resolve(handleCommandSuccess(stdout, document));
@@ -81,15 +81,20 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		if (this.useSpaces) {
 			cmd += " --use-spaces";
 		}
-		if (this.reorderCode) {
+		if (this.reorderCode && !this.safe) {
 			cmd += " --reorder-code";
+		}
+		if (this.safe) {
+			cmd += " --safe";
 		}
 		return cmd;
 	}
 }
 
 function handleCommandError(err: childProcess.ExecException): Error {
-	return new Error(`Command: ${err.cmd}, Code: ${err.code}, Error: ${err.message}`);
+	const error = new Error(`Command: ${err.cmd}, Code: ${err.code}, Error: ${err.message}`);
+	outputChannel.appendLine(`Linting failed: ${error.message}`);
+	return error;
 }
 
 function handleCommandSuccess(stdout: string, document: vscode.TextDocument) {

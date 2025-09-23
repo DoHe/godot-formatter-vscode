@@ -8,17 +8,18 @@ This is a standard VSCode formatter and as such supports typical formatter capab
 
 ## Requirements
 
-This extension does not ship with the gdscript formatter binaries themselves. You can retrieve them [here](https://github.com/GDQuest/GDScript-formatter/releases). You can either add them to your system's PATH for autodiscovery or specify the path to the executable in the extension settings (see below).
+This extension does not ship with the gdscript formatter binary itself. You can retrieve the one for your platform [here](https://github.com/GDQuest/GDScript-formatter/releases). You can either add it to your system's PATH for autodiscovery or specify the path to the executable in the extension settings (see below). If the binary is added to PATH, make sure to remove the platform and architecture from the filename, e.g. rename `gdscript-formatter-windows-x86_64.exe` to `gdscript-formatter.exe` or `gdscript-formatter-linux-aarch64` to `gdscript-formatter`.
 
 ## Extension Settings
 
 This extension supports the following settings:
 
-- `godotFormatter.enable`: Enable/disable this extension
-- `godotFormatter.gdscriptFormatterPath`: The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH
+- `godotFormatter.enable`: Enable/disable formatting with this extension
+- `godotFormatter.gdscriptFormatterPath`: The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH.
 - `godotFormatter.useSpaces`: Whether to use spaces. If disabled will use tabs.
 - `godotFormatter.indentSize`: How many spaces to use for indentation. This is only used if `useSpaces` is enabled
-- `godotFormatter.reorderCode`: Whether to allow reordering code chunks, like exported variables vs constants etc
+- `godotFormatter.reorderCode`: Whether to allow reordering code blocks, like exported variables vs constants etc
+- `godotFormatter.safe`: Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant.
 
 ## Known Issues
 
@@ -26,14 +27,4 @@ None so far
 
 ## Release Notes
 
-### 0.0.3
-
-Update visuals for extension store
-
-### 0.0.2
-
-Update extension store metadata
-
-### 0.0.1
-
-Initial test release of Godot Format
+See [changelog](https://marketplace.visualstudio.com/items/DoHe.godot-format/changelog)
