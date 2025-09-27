@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -19,7 +19,7 @@
     "onLanguage:gdscript"
   ],
   "main": "./dist/extension.js",
-  "icon": "./icon.png",
+  "icon": "icon.png",
   "keywords": [
     "godot",
     "gdscript",
@@ -51,10 +51,15 @@
           "default": true,
           "description": "Enable/disable formatting with this extension"
         },
+        "godotFormatter.useBuiltInBinary": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to use the built-in formatter binary that ships with the extension."
+        },
         "godotFormatter.gdscriptFormatterPath": {
           "type": "string",
           "default": "",
-          "description": "The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH. If using PATH, make sure to remove the architecture/platform suffix if you copied the binary from the releases page."
+          "description": "The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH. If using PATH, make sure to remove the architecture/platform suffix if you copied the binary from the releases page. Only used if useBuiltInBinary is false."
         },
         "godotFormatter.useSpaces": {
           "type": "boolean",
@@ -69,7 +74,7 @@
         "godotFormatter.reorderCode": {
           "type": "boolean",
           "default": false,
-          "description": "Whether to allow reordering code blocks, like exported variables vs constants etc"
+          "description": "Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if safe mode is disabled."
         },
         "godotFormatter.safe": {
           "type": "boolean",

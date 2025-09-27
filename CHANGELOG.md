@@ -2,6 +2,13 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.1.0] - 2025-09-27
+
+### Added
+
+- Bundle platform-specific binary and add option to use that instead of a provided binary
+- Github Action for automated build
+
 ## [0.0.4] - 2025-09-23
 
 ### Added

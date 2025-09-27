@@ -1,8 +1,11 @@
+import * as path from 'node:path';
+
 import * as vscode from 'vscode';
 import * as childProcess from "child_process";
 import * as os from "os";
 
 const DEFAULT_EXECUTABLE = "gdscript-formatter";
+const BUILT_IN_BINARY_PATH = path.join(__dirname, "..", "binaries", DEFAULT_EXECUTABLE);
 
 let outputChannel: vscode.OutputChannel;
 
@@ -33,6 +36,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private reorderCode: boolean = false;
 	private safe: boolean = false;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
+	private useBuiltInBinary: boolean = true;
 
 	constructor() {
 		this.updateConfig();
@@ -47,6 +51,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		this.reorderCode = config.get<boolean>("reorderCode", false);
 		this.safe = config.get<boolean>("safe", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
+		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
 	}
 
 
@@ -76,7 +81,10 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	}
 
 	getCommand(): string {
-		let executable = this.gdscriptFormatterPath;
+		let executable = BUILT_IN_BINARY_PATH;
+		if (!this.useBuiltInBinary) {
+			executable = this.gdscriptFormatterPath;
+		}
 		let cmd = `${executable} --indent-size=${this.indentSize}`;
 		if (this.useSpaces) {
 			cmd += " --use-spaces";
