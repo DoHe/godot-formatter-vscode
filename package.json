@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "engines": {
     "vscode": "^1.104.0"
   },
