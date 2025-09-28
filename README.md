@@ -8,7 +8,7 @@ This is a standard VSCode formatter and as such supports typical formatter capab
 
 ## Requirements
 
-This extension ships with the gdscript formatter binary for your specific platform at version `0.10.0` and uses it by default.
+This extension ships with the gdscript formatter binary for your specific platform at version `0.9.1` and uses it by default.
 If you want to provide your own binary, you can retrieve the one for your platform [here](https://github.com/GDQuest/GDScript-formatter/releases). You can either add it to your system's PATH for autodiscovery or specify the path to the executable in the extension settings (see below). If the binary is added to PATH, make sure to remove the platform and architecture from the filename, e.g. rename `gdscript-formatter-windows-x86_64.exe` to `gdscript-formatter.exe` or `gdscript-formatter-linux-aarch64` to `gdscript-formatter`. Then disable the `useBuiltInBinary` setting.
 
 ## Extension Settings
