@@ -2,6 +2,12 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.2.3] - 2025-10-03
+
+### Added
+
+- Also publish to [open-vsx.org](https://open-vsx.org/)
+
 ## [0.2.2] - 2025-10-01
 
 ### Changed
