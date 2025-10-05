@@ -33,6 +33,7 @@
     "type": "git",
     "url": "https://github.com/DoHe/godot-formatter-vscode"
   },
+  "gdscript_formatter_version": "0.12.0",
   "contributes": {
     "languages": [
       {
