@@ -83,8 +83,11 @@ def update_extension_version(current_version: str, impact: str) -> str:
     major, minor, patch = current_version.split(".")
     if impact == "major":
         major = str(int(major) + 1)
+        minor = "0"
+        patch = "0"
     elif impact == "minor":
         minor = str(int(minor) + 1)
+        patch = "0"
     elif impact == "patch":
         patch = str(int(patch) + 1)
     return f"{major}.{minor}.{patch}"

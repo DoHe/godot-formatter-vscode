@@ -2,7 +2,7 @@
 
 set -e
 
-DEFAULT_VERSION="0.12.0"
+DEFAULT_VERSION="0.13.1"
 VALID_TARGETS=("linux-x86_64" "linux-aarch64" "windows-x86_64" "windows-aarch64" "macos-x86_64" "macos-aarch64")
 
 TARGET="$1"
