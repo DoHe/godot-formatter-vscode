@@ -119,3 +119,14 @@ if __name__ == "__main__":
         new_formatter_version,
         new_formatter_version != formatter_version,
     )
+
+    print("Run the following commands:")
+    print("git add .")
+    print(
+        f"git commit -m 'Update to gdscript-formatter version {new_formatter_version}'"
+    )
+    print("git push")
+    print(
+        f"git tag v{new_extension_version} -m 'Publish version {new_extension_version}'"
+    )
+    print(f"git push origin v{new_extension_version}")
