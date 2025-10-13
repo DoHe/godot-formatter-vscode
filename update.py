@@ -83,8 +83,11 @@ def update_extension_version(current_version: str, impact: str) -> str:
     major, minor, patch = current_version.split(".")
     if impact == "major":
         major = str(int(major) + 1)
+        minor = "0"
+        patch = "0"
     elif impact == "minor":
         minor = str(int(minor) + 1)
+        patch = "0"
     elif impact == "patch":
         patch = str(int(patch) + 1)
     return f"{major}.{minor}.{patch}"
@@ -116,3 +119,14 @@ if __name__ == "__main__":
         new_formatter_version,
         new_formatter_version != formatter_version,
     )
+
+    print("Run the following commands:")
+    print("git add .")
+    print(
+        f"git commit -m 'Update to gdscript-formatter version {new_formatter_version}'"
+    )
+    print("git push")
+    print(
+        f"git tag v{new_extension_version} -m 'Publish version {new_extension_version}'"
+    )
+    print(f"git push origin v{new_extension_version}")
