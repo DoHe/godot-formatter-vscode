@@ -1,10 +1,15 @@
 # godot-format
 
-A godot/gdscript formatter extension for VSCode. It uses [GDScript-formatter](https://github.com/GDQuest/GDScript-formatter) by GDQuest.
+A godot/gdscript formatter and linter extension for VSCode. It uses [GDScript-formatter](https://github.com/GDQuest/GDScript-formatter) by GDQuest.
 
 ## Features
 
-This is a standard VSCode formatter and as such supports typical formatter capabilities like the format command or autoformatting on save.
+This extension provides:
+
+- **Formatting**: Standard VSCode formatter capabilities including format command and autoformatting on save
+- **Linting**: Highlights style and convention issues in your GDScript files
+
+The linter runs automatically when you save a file and displays warnings and errors inline with your code.
 
 ## Requirements
 
@@ -22,6 +27,11 @@ This extension supports the following settings:
 - `godotFormatter.indentSize`: How many spaces to use for indentation. This is only used if `useSpaces` is enabled
 - `godotFormatter.reorderCode`:Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if safe mode is disabled.
 - `godotFormatter.safe`: Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant.
+- `godotFormatter.enableLinter`: Enable/disable linting with this extension
+- `godotFormatter.linterMaxLineLength`: Configure the maximum line length for the liner. Default: 100.
+- `godotFormatter.linterIgnoredRules`: Comma-separated list of rules to ignore.
+  - [See the GDScript-formatter README](https://github.com/GDQuest/GDScript-formatter) for a full list of rules
+  - _NOTE:_ Rules can also be ignored with a `# gdlint-ignore-next-line (rules)` above a line or `# gdlint-ignore (rules)` next to a line.
 
 ## Known Issues
 
@@ -30,3 +40,20 @@ None so far
 ## Release Notes
 
 See [changelog](https://marketplace.visualstudio.com/items/DoHe.godot-format/changelog)
+
+## Testing locally
+
+1. Run `get-binary.sh (architecture)`
+   - [See versions here](https://github.com/GDQuest/GDScript-formatter/releases)
+   - Supported architectures:
+     - `linux-x86_64`
+     - `linux-aarch64`
+     - `windows-x86_64`
+     - `windows-aarch64`
+     - `macos-x86_64`
+     - `macos-aarch64`
+   - This places the binary at `binaries/gdscript-formatter`
+2. Run `npm install`
+3. Run `npx @vscode/vsce package`
+   - This will generate a `.vsix` file at the root of this project
+   - Install the `.vsix` from the VSCode extension menu

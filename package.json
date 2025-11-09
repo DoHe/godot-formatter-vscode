@@ -1,7 +1,7 @@
 {
   "name": "godot-format",
   "displayName": "godot-format",
-  "description": "A formatter for Godot/GDScript using GDQuest's gdscript formatter",
+  "description": "A formatter and linter for Godot/GDScript using GDQuest's gdscript formatter",
   "version": "0.2.7",
   "engines": {
     "vscode": "^1.104.0"
@@ -9,7 +9,8 @@
   "license": "MIT",
   "publisher": "DoHe",
   "categories": [
-    "Formatters"
+    "Formatters",
+    "Linters"
   ],
   "galleryBanner": {
     "color": "#478cbf",
@@ -24,7 +25,9 @@
     "godot",
     "gdscript",
     "formatter",
-    "format"
+    "format",
+    "linter",
+    "lint"
   ],
   "repository": {
     "type": "git",
@@ -51,6 +54,11 @@
           "type": "boolean",
           "default": true,
           "description": "Enable/disable formatting with this extension"
+        },
+        "godotFormatter.enableLinter": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable linting with this extension"
         },
         "godotFormatter.useBuiltInBinary": {
           "type": "boolean",
@@ -81,6 +89,16 @@
           "type": "boolean",
           "default": true,
           "description": "Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant."
+        },
+        "godotFormatter.linterMaxLineLength": {
+          "type": "integer",
+          "default": 100,
+          "description": "Maximum line length for the linter. Lines longer than this will be flagged as warnings."
+        },
+        "godotFormatter.linterIgnoredRules": {
+          "type": "string",
+          "default": "",
+          "description": "Comma-separated list of linter rules to ignore (e.g., 'class-name,signal-name')."
         }
       }
     }
