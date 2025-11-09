@@ -1,4 +1,5 @@
-class_name TestClass extends Node
+class_name TestClass
+extends Node
 
 const EXAMPLE_CONST: String = "Example"
 
@@ -12,14 +13,10 @@ var example_var: String = "Example"
 func _ready():
 	print("TestClass is ready")
 func broke(:
-	dasjsdal 
-
-
+	dasjsdal
 func test_method():
 	print("Test method called"
-
-
-)
+print("this is a very long line this is a very long line this is a very long line this is a very long line this is a very long line this is a very long line")
 
 var a_long_dict := {
 	"key1": "value1",

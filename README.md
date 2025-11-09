@@ -57,3 +57,5 @@ See [changelog](https://marketplace.visualstudio.com/items/DoHe.godot-format/cha
 3. Run `npx @vscode/vsce package`
    - This will generate a `.vsix` file at the root of this project
    - Install the `.vsix` from the VSCode extension menu
+
+Alternatively if you are using VSCode for development you can run the extension in debug mode from VSCode's built-in "Run and Debug" dialog.

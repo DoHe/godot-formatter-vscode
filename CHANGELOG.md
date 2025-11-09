@@ -2,6 +2,12 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.2.8] - 2025-11-09
+
+### Added
+
+- Linting support (thanks to @TranquilMarmot)
+
 ## [0.2.7] - 2025-11-09
 
 ### Updated
