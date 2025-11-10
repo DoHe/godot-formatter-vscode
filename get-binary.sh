@@ -19,10 +19,10 @@ file_ext=""
 if [[ "$TARGET" == windows* ]]; then
   file_ext=".exe"
 fi
-url="https://github.com/GDQuest/GDScript-formatter/releases/download/$VERSION/gdscript-formatter-$TARGET$file_ext.zip"
+url="https://github.com/GDQuest/GDScript-formatter/releases/download/$VERSION/gdscript-formatter-$VERSION-$TARGET$file_ext.zip"
 echo "Downloading gdscript-formatter version $VERSION for target $TARGET at: $url"
 
 curl -L --output temp.zip $url && \
 unzip -o temp.zip -d binaries && \
 rm temp.zip && \
-mv "binaries/gdscript-formatter-$TARGET$file_ext" "binaries/gdscript-formatter$file_ext"
+mv "binaries/gdscript-formatter-$VERSION-$TARGET$file_ext" "binaries/gdscript-formatter$file_ext"
