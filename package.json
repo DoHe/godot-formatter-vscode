@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter and linter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -33,7 +33,7 @@
     "type": "git",
     "url": "https://github.com/DoHe/godot-formatter-vscode"
   },
-  "gdscript_formatter_version": "0.15.0",
+  "gdscript_formatter_version": "0.16.1",
   "contributes": {
     "languages": [
       {
