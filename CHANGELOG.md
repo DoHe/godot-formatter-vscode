@@ -2,6 +2,12 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.2.11] - 2025-11-18
+
+### Updated
+
+- Update to gdscript-formatter version 0.18.0
+
 ## [0.2.10] - 2025-11-11
 
 ### Updated
