@@ -15,13 +15,15 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: GDQuest/GDScript-formatter
-      - run: echo ${{ steps.gdscript-formatter.outputs.release }}
+      - run: echo "Latest release is ${{ steps.gdscript-formatter.outputs.release }}"
       - run: python update.py '${{ steps.gdscript-formatter.outputs.release }}'
       - run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          if [ -n "$(git status --porcelain | grep -v 'get-binary.sh')" ]; then
+            echo "Dependency updates found, committing changes"
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git commit -am "Update to gdscript-formatter version ${{ steps.gdscript-formatter.outputs.release }}"
+            echo "Pushing"
             git push
             git tag v${{ steps.gdscript-formatter.outputs.release }} -m 'Publish version ${{ steps.gdscript-formatter.outputs.release }}'
             git push origin v${{ steps.gdscript-formatter.outputs.release }}
