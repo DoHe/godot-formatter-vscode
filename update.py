@@ -95,21 +95,41 @@ def update_extension_version(current_version: str, impact: str) -> str:
 
 if __name__ == "__main__":
     import sys
+    from argparse import ArgumentParser
 
-    if len(sys.argv) < 2:
-        print("Usage: python update.py <gdscript_formatter_version> (<upgrade_impact>)")
-        sys.exit(1)
+    parser = ArgumentParser(
+        description="Update versions for the extension and formatter."
+    )
+    parser.add_argument(
+        "gdscript_formatter_version", type=str, help="New gdscript-formatter version"
+    )
+    parser.add_argument(
+        "upgrade_impact",
+        type=str,
+        default="patch",
+        help="Impact of the upgrade: major, minor, or patch (default: patch)",
+        choices=["major", "minor", "patch"],
+        nargs="?",
+    )
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="Force update even if the formatter version is the same",
+    )
 
-    new_formatter_version = sys.argv[1]
-    upgrade_impact = "patch"
-    if len(sys.argv) > 2:
-        upgrade_impact = sys.argv[2]
-        if upgrade_impact not in ["major", "minor", "patch"]:
-            print("Invalid upgrade impact. Use 'major', 'minor', or 'patch'.")
-            sys.exit(1)
+    args = parser.parse_args()
+
+    new_formatter_version = args.gdscript_formatter_version
+    upgrade_impact = args.upgrade_impact
+    force_update = args.force
 
     extension_version, formatter_version = get_current_versions()
     new_extension_version = update_extension_version(extension_version, upgrade_impact)
+
+    if new_formatter_version == formatter_version and not force_update:
+        print("No update needed. The formatter version is the same.")
+        sys.exit(0)
 
     update_package_json(new_extension_version, new_formatter_version)
     update_readme(new_formatter_version)

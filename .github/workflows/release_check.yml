@@ -1,0 +1,30 @@
+name: Release Check
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - id: gdscript-formatter
+        uses: pozetroninc/github-action-get-latest-release@v0.8.0
+        with:
+          repository: GDQuest/GDScript-formatter
+      - run: echo ${{ steps.gdscript-formatter.outputs.release }}
+      - run: python update.py '${{ steps.gdscript-formatter.outputs.release }}'
+      - run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -am "Update to gdscript-formatter version ${{ steps.gdscript-formatter.outputs.release }}"
+            git push
+            git tag v${{ steps.gdscript-formatter.outputs.release }} -m 'Publish version ${{ steps.gdscript-formatter.outputs.release }}'
+            git push origin v${{ steps.gdscript-formatter.outputs.release }}
+          else
+            echo "No dependency updates found"
+          fi
