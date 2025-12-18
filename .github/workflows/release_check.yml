@@ -3,11 +3,16 @@ on:
   schedule:
     - cron: "0 */6 * * *"
 
+  workflow_dispatch:
+
+
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GIT_PAT }}
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
@@ -20,13 +25,15 @@ jobs:
       - run: |
           if [ -n "$(git status --porcelain | grep -v 'get-binary.sh')" ]; then
             echo "Dependency updates found, committing changes"
+            package_version=$(python -c "import json; print(json.load(open('package.json'))['version'])")
+            echo "New package version is ${package_version}"
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git commit -am "Update to gdscript-formatter version ${{ steps.gdscript-formatter.outputs.release }}"
             echo "Pushing"
             git push
-            git tag v${{ steps.gdscript-formatter.outputs.release }} -m 'Publish version ${{ steps.gdscript-formatter.outputs.release }}'
-            git push origin v${{ steps.gdscript-formatter.outputs.release }}
+            git tag v${package_version} -m "Publish version ${package_version}"
+            git push origin v${package_version}
           else
             echo "No dependency updates found"
           fi
