@@ -117,7 +117,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		if (!this.useBuiltInBinary) {
 			executable = this.gdscriptFormatterPath;
 		}
-		let cmd = `${executable} --indent-size=${this.indentSize}`;
+		let cmd = `"${executable}" --indent-size=${this.indentSize}`;
 		if (this.useSpaces) {
 			cmd += " --use-spaces";
 		}
