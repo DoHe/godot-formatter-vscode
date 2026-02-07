@@ -2,6 +2,12 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.2.14] - 2026-02-07
+
+### Fixed
+
+- Wrap command in quotes in case of spaces in path
+
 ## [0.2.13] - 2025-12-18
 
 ### Updated
