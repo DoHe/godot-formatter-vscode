@@ -2,6 +2,13 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.2.18] - 2026-05-27
+
+### Updated
+
+Github actions and vsce tool
+
+
 ## [0.2.17] - 2026-05-27
 
 ### Updated
