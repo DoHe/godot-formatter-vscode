@@ -41,7 +41,7 @@ jobs:
           node-version: 22.x
       - run: bash get-binary.sh ${{ matrix.target }}
       - run: npm install
-      - run: npx vsce package --target ${{ matrix.vsc-target }}
+      - run: npx @vscode/vsce package --target ${{ matrix.vsc-target }}
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.vsc-target }}
