@@ -19,6 +19,7 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@v0.8.0
         with:
           repository: GDQuest/GDScript-formatter
+          excludes: prerelease,draft
       - run: echo "Latest release is ${{ steps.gdscript-formatter.outputs.release }}"
       - run: python update.py '${{ steps.gdscript-formatter.outputs.release }}'
       - run: |
