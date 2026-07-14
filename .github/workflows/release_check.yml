@@ -20,6 +20,7 @@ jobs:
         with:
           repository: GDQuest/GDScript-formatter
           excludes: prerelease,draft
+          token: ${{ secrets.GITHUB_TOKEN }}
       - run: echo "Latest release is ${{ steps.gdscript-formatter.outputs.release }}"
       - run: python update.py '${{ steps.gdscript-formatter.outputs.release }}'
       - run: |
