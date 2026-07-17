@@ -69,6 +69,10 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private safe: boolean = false;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
+	private maxLineLength: number = 100;
+	private blankLinesAroundDefinitions: number = 2;
+	private continuationIndentLevel: number = 2;
+	private quoteStyle: string = "preserve";
 
 	constructor() {
 		this.updateConfig();
@@ -84,6 +88,10 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		this.safe = config.get<boolean>("safe", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
+		this.maxLineLength = config.get<number>("maxLineLength", 100);
+		this.blankLinesAroundDefinitions = config.get<number>("blankLinesAroundDefinitions", 2);
+		this.continuationIndentLevel = config.get<number>("continuationIndentLevel", 2);
+		this.quoteStyle = config.get<string>("quoteStyle", "preserve");
 	}
 
 
@@ -117,7 +125,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		if (!this.useBuiltInBinary) {
 			executable = this.gdscriptFormatterPath;
 		}
-		let cmd = `"${executable}" --indent-size=${this.indentSize}`;
+		let cmd = `"${executable}" --indent-size=${this.indentSize} --max-line-length=${this.maxLineLength} --blank-lines-around-definitions=${this.blankLinesAroundDefinitions} --continuation-indent-level=${this.continuationIndentLevel} --quote-style=${this.quoteStyle}`;
 		if (this.useSpaces) {
 			cmd += " --use-spaces";
 		}

@@ -2,6 +2,13 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.3.0] - 2026-07-17
+
+### Added
+
+- Add new configuration options introduced in 0.21.0
+
+
 ## [0.2.19] - 2026-07-17
 
 ### Updated

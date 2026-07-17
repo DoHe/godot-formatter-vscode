@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter and linter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.2.19",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -89,6 +89,26 @@
           "type": "boolean",
           "default": true,
           "description": "Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant."
+        },
+        "godotFormatter.maxLineLength": {
+          "type": "integer",
+          "default": 100,
+          "description": "Maximum line length for the formatter. Lines longer than this will be wrapped."
+        },
+        "godotFormatter.blankLinesAroundDefinitions": {
+          "type": "integer",
+          "default": 2,
+          "description": "Blank lines between top-level definitions"
+        },
+        "godotFormatter.continuationIndentLevel": {
+          "type": "integer",
+          "default": 2,
+          "description": "Extra indent for line continuations."
+        },
+        "godotFormatter.quoteStyle": {
+          "type": "string",
+          "default": "preserve",
+          "description": "Quote style for strings. Must be 'single', 'double' or 'preserve'."
         },
         "godotFormatter.linterMaxLineLength": {
           "type": "integer",
