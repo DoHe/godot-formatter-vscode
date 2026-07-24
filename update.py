@@ -3,7 +3,6 @@
 import json
 import re
 from datetime import datetime
-from typing import Tuple
 
 
 def update_package_json(extension_version: str, formatter_version: str):
@@ -26,7 +25,7 @@ def update_readme(formatter_version: str):
     )
 
 
-def get_current_versions() -> Tuple[str, str]:
+def get_current_versions() -> tuple[str, str]:
     with open("package.json", "r") as file:
         data = json.load(file)
     return data["version"], data["gdscript_formatter_version"]

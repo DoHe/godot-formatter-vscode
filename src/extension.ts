@@ -66,7 +66,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private indentSize: number = 4;
 	private useSpaces: boolean = false;
 	private reorderCode: boolean = false;
-	private safe: boolean = false;
+	private verifyStructure: boolean = false;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
 	private maxLineLength: number = 100;
@@ -85,7 +85,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		this.indentSize = config.get<number>("indentSize", 4);
 		this.useSpaces = config.get<boolean>("useSpaces", false);
 		this.reorderCode = config.get<boolean>("reorderCode", false);
-		this.safe = config.get<boolean>("safe", true);
+		this.verifyStructure = config.get<boolean>("verifyStructure", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
 		this.maxLineLength = config.get<number>("maxLineLength", 100);
@@ -129,11 +129,11 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		if (this.useSpaces) {
 			cmd += " --use-spaces";
 		}
-		if (this.reorderCode && !this.safe) {
+		if (this.reorderCode && !this.verifyStructure) {
 			cmd += " --reorder-code";
 		}
-		if (this.safe) {
-			cmd += " --safe";
+		if (this.verifyStructure) {
+			cmd += " --verify-structure";
 		}
 		return cmd;
 	}

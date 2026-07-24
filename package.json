@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter and linter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -83,12 +83,12 @@
         "godotFormatter.reorderCode": {
           "type": "boolean",
           "default": false,
-          "description": "Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if safe mode is disabled."
+          "description": "Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if verifyStructure is disabled."
         },
-        "godotFormatter.safe": {
+        "godotFormatter.verifyStructure": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant."
+          "description": "Whether to verify formatted output has the same structure as the input. If this enabled, `reorderCode` is ignored. Slightly less performant."
         },
         "godotFormatter.maxLineLength": {
           "type": "integer",

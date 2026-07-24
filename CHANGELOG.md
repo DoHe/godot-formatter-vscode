@@ -2,6 +2,12 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.4.0] - 2026-07-24
+
+### Updated
+
+- Use new name for safe parameter
+
 ## [0.3.3] - 2026-07-24
 
 ### Updated
@@ -26,7 +32,6 @@ All notable changes to the "godot-format" extension will be documented in this f
 
 - Add new configuration options introduced in 0.21.0
 
-
 ## [0.2.19] - 2026-07-17
 
 ### Updated
@@ -38,7 +43,6 @@ All notable changes to the "godot-format" extension will be documented in this f
 ### Updated
 
 Github actions and vsce tool
-
 
 ## [0.2.17] - 2026-05-27
 

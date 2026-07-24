@@ -26,7 +26,11 @@ This extension supports the following settings:
 - `godotFormatter.useSpaces`: Whether to use spaces. If disabled will use tabs.
 - `godotFormatter.indentSize`: How many spaces to use for indentation. This is only used if `useSpaces` is enabled
 - `godotFormatter.reorderCode`:Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if safe mode is disabled.
-- `godotFormatter.safe`: Whether to enable safe mode. Safe mode tries to preserve existing syntax and structure where possible and otherwise does not format the file. If this enabled, `reorderCode` is ignored. Slightly less performant.
+- `godotFormatter.verifyStructure`: Whether to verify formatted output has the same structure as the input. If this enabled, `reorderCode` is ignored. Slightly less performant.
+- `godotFormatter.maxLineLength`: Maximum line length for the formatter. Lines longer than this will be wrapped.
+- `godotFormatter.blankLinesAroundDefinitions`: Blank lines between top-level definitions
+- `godotFormatter.continuationIndentLevel`: Extra indent for line continuations.
+- `godotFormatter.quoteStyle`: Quote style for strings. Must be 'single', 'double' or 'preserve'.
 - `godotFormatter.enableLinter`: Enable/disable linting with this extension
 - `godotFormatter.linterMaxLineLength`: Configure the maximum line length for the liner. Default: 100.
 - `godotFormatter.linterIgnoredRules`: Comma-separated list of rules to ignore.
