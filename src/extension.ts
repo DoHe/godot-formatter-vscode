@@ -63,16 +63,16 @@ export function deactivate() { }
 
 class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private enabled: boolean = true;
-	private indentSize: number = 4;
-	private useSpaces: boolean = false;
-	private reorderCode: boolean = false;
-	private verifyStructure: boolean = false;
+	private indentSize: number | null = null;
+	private useSpaces: boolean | null = null;
+	private reorderCode: boolean | null = null;
+	private verifyStructure: boolean | null = null;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
-	private maxLineLength: number = 100;
-	private blankLinesAroundDefinitions: number = 2;
-	private continuationIndentLevel: number = 2;
-	private quoteStyle: string = "preserve";
+	private maxLineLength: number | null = null;
+	private blankLinesAroundDefinitions: number | null = null;
+	private continuationIndentLevel: number | null = null;
+	private quoteStyle: string | null = null;
 
 	constructor() {
 		this.updateConfig();
@@ -82,16 +82,16 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	updateConfig() {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
 		this.enabled = config.get<boolean>("enabled", true);
-		this.indentSize = config.get<number>("indentSize", 4);
-		this.useSpaces = config.get<boolean>("useSpaces", false);
-		this.reorderCode = config.get<boolean>("reorderCode", false);
-		this.verifyStructure = config.get<boolean>("verifyStructure", true);
+		this.indentSize = config.get<number | null>("indentSize", null);
+		this.useSpaces = config.get<boolean | null>("useSpaces", null);
+		this.reorderCode = config.get<boolean | null>("reorderCode", null);
+		this.verifyStructure = config.get<boolean | null>("verifyStructure", null);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = config.get<number>("maxLineLength", 100);
-		this.blankLinesAroundDefinitions = config.get<number>("blankLinesAroundDefinitions", 2);
-		this.continuationIndentLevel = config.get<number>("continuationIndentLevel", 2);
-		this.quoteStyle = config.get<string>("quoteStyle", "preserve");
+		this.maxLineLength = config.get<number | null>("maxLineLength", null);
+		this.blankLinesAroundDefinitions = config.get<number | null>("blankLinesAroundDefinitions", null);
+		this.continuationIndentLevel = config.get<number | null>("continuationIndentLevel", null);
+		this.quoteStyle = config.get<string | null>("quoteStyle", null);
 	}
 
 
@@ -125,7 +125,22 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		if (!this.useBuiltInBinary) {
 			executable = this.gdscriptFormatterPath;
 		}
-		let cmd = `"${executable}" --indent-size=${this.indentSize} --max-line-length=${this.maxLineLength} --blank-lines-around-definitions=${this.blankLinesAroundDefinitions} --continuation-indent-level=${this.continuationIndentLevel} --quote-style=${this.quoteStyle}`;
+		let cmd = `"${executable}"`;
+		if (this.indentSize !== null) {
+			cmd += ` --indent-size=${this.indentSize}`;
+		}
+		if (this.maxLineLength !== null) {
+			cmd += ` --max-line-length=${this.maxLineLength}`;
+		}
+		if (this.blankLinesAroundDefinitions !== null) {
+			cmd += ` --blank-lines-around-definitions=${this.blankLinesAroundDefinitions}`;
+		}
+		if (this.continuationIndentLevel !== null) {
+			cmd += ` --continuation-indent-level=${this.continuationIndentLevel}`;
+		}
+		if (this.quoteStyle !== null) {
+			cmd += ` --quote-style=${this.quoteStyle}`;
+		}
 		if (this.useSpaces) {
 			cmd += " --use-spaces";
 		}
@@ -143,7 +158,7 @@ class GDScriptLinter {
 	private enabled: boolean = true;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
-	private maxLineLength: number = 100;
+	private maxLineLength: number | null = null;
 	private ignoredRules: string = "";
 
 	constructor() {
@@ -155,7 +170,7 @@ class GDScriptLinter {
 		this.enabled = config.get<boolean>("enableLinter", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = config.get<number>("linterMaxLineLength", 100);
+		this.maxLineLength = config.get<number | null>("linterMaxLineLength", null);
 		this.ignoredRules = config.get<string>("linterIgnoredRules", "").trim();
 	}
 
@@ -198,8 +213,10 @@ class GDScriptLinter {
 			executable = this.gdscriptFormatterPath;
 		}
 
-		let command = `${executable} lint "${fileName}" --max-line-length ${this.maxLineLength}`;
-
+		let command = `${executable} lint "${fileName}"`;
+		if (this.maxLineLength !== null) {
+			command += ` --max-line-length ${this.maxLineLength}`;
+		}
 		if (this.ignoredRules) {
 			command += ` --disable ${this.ignoredRules}`;
 		}
