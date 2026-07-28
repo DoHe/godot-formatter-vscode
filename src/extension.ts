@@ -60,6 +60,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
+const getUserSetting = <T>(key: string, config: vscode.WorkspaceConfiguration): T | null => {
+			const inspect = config.inspect<T>(key);
+			return inspect?.workspaceValue ?? inspect?.globalValue ?? null;
+    };
+
 
 class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private enabled: boolean = true;
@@ -82,24 +87,17 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	updateConfig() {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
 
-		const getUserSetting = <T>(key: string): T | null => {
-			const inspect = config.inspect<T>(key);
-			return (inspect?.workspaceValue !== undefined || inspect?.globalValue !== undefined)
-					? inspect.workspaceValue ?? inspect.globalValue ?? null
-					: null;
-    };
-
 		this.enabled = config.get<boolean>("enabled", true);
-		this.indentSize = getUserSetting<number>("indentSize");
-		this.useSpaces = getUserSetting<boolean>("useSpaces");
-		this.reorderCode = getUserSetting<boolean>("reorderCode");
-		this.verifyStructure = getUserSetting<boolean>("verifyStructure");
+		this.indentSize = getUserSetting<number>("indentSize", config);
+		this.useSpaces = getUserSetting<boolean>("useSpaces", config);
+		this.reorderCode = getUserSetting<boolean>("reorderCode", config);
+		this.verifyStructure = getUserSetting<boolean>("verifyStructure", config);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = getUserSetting<number>("maxLineLength");
-		this.blankLinesAroundDefinitions = getUserSetting<number>("blankLinesAroundDefinitions");
-		this.continuationIndentLevel = getUserSetting<number>("continuationIndentLevel");
-		this.quoteStyle = getUserSetting<string>("quoteStyle");
+		this.maxLineLength = getUserSetting<number>("maxLineLength", config);
+		this.blankLinesAroundDefinitions = getUserSetting<number>("blankLinesAroundDefinitions", config);
+		this.continuationIndentLevel = getUserSetting<number>("continuationIndentLevel", config);
+		this.quoteStyle = getUserSetting<string>("quoteStyle", config);
 	}
 
 
@@ -178,17 +176,10 @@ class GDScriptLinter {
 	updateConfig() {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
 
-		const getUserSetting = <T>(key: string): T | null => {
-			const inspect = config.inspect<T>(key);
-			return (inspect?.workspaceValue !== undefined || inspect?.globalValue !== undefined)
-					? inspect.workspaceValue ?? inspect.globalValue ?? null
-					: null;
-    };
-
 		this.enabled = config.get<boolean>("enableLinter", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = getUserSetting<number>("linterMaxLineLength");
+		this.maxLineLength = getUserSetting<number>("linterMaxLineLength", config);
 		this.ignoredRules = config.get<string>("linterIgnoredRules", "").trim();
 	}
 
