@@ -81,17 +81,25 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 
 	updateConfig() {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
+
+		const getUserSetting = <T>(key: string): T | null => {
+			const inspect = config.inspect<T>(key);
+			return (inspect?.workspaceValue !== undefined || inspect?.globalValue !== undefined)
+					? inspect.workspaceValue ?? inspect.globalValue ?? null
+					: null;
+    };
+
 		this.enabled = config.get<boolean>("enabled", true);
-		this.indentSize = config.get<number | null>("indentSize", null);
-		this.useSpaces = config.get<boolean | null>("useSpaces", null);
-		this.reorderCode = config.get<boolean | null>("reorderCode", null);
-		this.verifyStructure = config.get<boolean | null>("verifyStructure", null);
+		this.indentSize = getUserSetting<number>("indentSize");
+		this.useSpaces = getUserSetting<boolean>("useSpaces");
+		this.reorderCode = getUserSetting<boolean>("reorderCode");
+		this.verifyStructure = getUserSetting<boolean>("verifyStructure");
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = config.get<number | null>("maxLineLength", null);
-		this.blankLinesAroundDefinitions = config.get<number | null>("blankLinesAroundDefinitions", null);
-		this.continuationIndentLevel = config.get<number | null>("continuationIndentLevel", null);
-		this.quoteStyle = config.get<string | null>("quoteStyle", null);
+		this.maxLineLength = getUserSetting<number>("maxLineLength");
+		this.blankLinesAroundDefinitions = getUserSetting<number>("blankLinesAroundDefinitions");
+		this.continuationIndentLevel = getUserSetting<number>("continuationIndentLevel");
+		this.quoteStyle = getUserSetting<string>("quoteStyle");
 	}
 
 
@@ -167,10 +175,18 @@ class GDScriptLinter {
 
 	updateConfig() {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
+
+		const getUserSetting = <T>(key: string): T | null => {
+			const inspect = config.inspect<T>(key);
+			return (inspect?.workspaceValue !== undefined || inspect?.globalValue !== undefined)
+					? inspect.workspaceValue ?? inspect.globalValue ?? null
+					: null;
+    };
+
 		this.enabled = config.get<boolean>("enableLinter", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = config.get<number | null>("linterMaxLineLength", null);
+		this.maxLineLength = getUserSetting<number>("linterMaxLineLength");
 		this.ignoredRules = config.get<string>("linterIgnoredRules", "").trim();
 	}
 
