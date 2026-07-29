@@ -110,8 +110,8 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 
 	callGDScriptFormatter(document: vscode.TextDocument): Promise<vscode.TextEdit[]> {
 		return new Promise((resolve, reject) => {
-			const cmd = this.getCommand(document.fileName);
-			outputChannel.appendLine(`Run format command: '${cmd}'`)
+			const cmd = this.getCommand();
+			outputChannel.appendLine(`Run format command: '${cmd}' for file '${document.fileName}'`)
 			const process = childProcess.exec(
 				cmd,
 				{ encoding: "utf8" },
@@ -128,12 +128,12 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		});
 	}
 
-	getCommand(fileName: string): string {
+	getCommand(): string {
 		let executable = BUILT_IN_BINARY_PATH;
 		if (!this.useBuiltInBinary) {
 			executable = this.gdscriptFormatterPath;
 		}
-		let cmd = `"${executable}" "${fileName}" --stdout`;
+		let cmd = `"${executable}" --stdout`;
 		if (this.indentSize !== null) {
 			cmd += ` --indent-size=${this.indentSize}`;
 		}
