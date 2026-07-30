@@ -80,6 +80,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private blankLinesAroundDefinitions: number | null = null;
 	private continuationIndentLevel: number | null = null;
 	private quoteStyle: string | null = null;
+	private args: string[] = [];
 
 	constructor() {
 		this.updateConfig();
@@ -100,6 +101,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		this.blankLinesAroundDefinitions = getUserSetting<number>("blankLinesAroundDefinitions", config);
 		this.continuationIndentLevel = getUserSetting<number>("continuationIndentLevel", config);
 		this.quoteStyle = getUserSetting<string>("quoteStyle", config);
+		this.args = config.get<string[]>("args", []);
 	}
 
 
@@ -170,6 +172,7 @@ class GDScriptLinter {
 	private useBuiltInBinary: boolean = true;
 	private maxLineLength: number | null = null;
 	private ignoredRules: string = "";
+	private linterArgs: string[] = [];
 
 	constructor() {
 		this.updateConfig();
@@ -183,6 +186,7 @@ class GDScriptLinter {
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
 		this.maxLineLength = getUserSetting<number>("linterMaxLineLength", config);
 		this.ignoredRules = config.get<string>("linterIgnoredRules", "").trim();
+		this.linterArgs = config.get<string[]>("linterArgs", []);
 	}
 
 	async lintDocument(document: vscode.TextDocument) {
