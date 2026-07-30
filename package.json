@@ -70,54 +70,60 @@
           "default": "",
           "description": "The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH. If using PATH, make sure to remove the architecture/platform suffix if you copied the binary from the releases page. Only used if useBuiltInBinary is false."
         },
+        "godotFormatter.args": {
+          "default": [],
+          "markdownDescription": "Additional command-line arguments to pass to `gdscript-formatter`. Arguments passed here take precedence over other settings! E.g. setting `\"args\": [\"--max-line-length=80\"]` and `\"maxLineLength\": 100` would result in 80.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "godotFormatter.argsLinter": {
+          "default": [],
+          "markdownDescription": "Additional command-line arguments to pass to `gdscript-formatter lint`. Arguments passed here take precedence over other settings! E.g. setting `\"args\": [\"--max-line-length=80\"]` and `\"linterMaxLineLength\": 100` would result in 80.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "godotFormatter.useSpaces": {
           "type": "boolean",
-          "default": false,
           "description": "Whether to use spaces. If disabled will use tabs."
         },
         "godotFormatter.indentSize": {
           "type": "integer",
-          "default": 4,
           "description": "How many spaces to use for indentation. This is only used if `useSpaces` is enabled"
         },
         "godotFormatter.reorderCode": {
           "type": "boolean",
-          "default": false,
           "description": "Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if verifyStructure is disabled."
         },
         "godotFormatter.verifyStructure": {
           "type": "boolean",
-          "default": true,
           "description": "Whether to verify formatted output has the same structure as the input. If this enabled, `reorderCode` is ignored. Slightly less performant."
         },
         "godotFormatter.maxLineLength": {
           "type": "integer",
-          "default": 100,
           "description": "Maximum line length for the formatter. Lines longer than this will be wrapped."
         },
         "godotFormatter.blankLinesAroundDefinitions": {
           "type": "integer",
-          "default": 2,
           "description": "Blank lines between top-level definitions"
         },
         "godotFormatter.continuationIndentLevel": {
           "type": "integer",
-          "default": 2,
           "description": "Extra indent for line continuations."
         },
         "godotFormatter.quoteStyle": {
           "type": "string",
-          "default": "preserve",
           "description": "Quote style for strings. Must be 'single', 'double' or 'preserve'."
         },
         "godotFormatter.linterMaxLineLength": {
           "type": "integer",
-          "default": 100,
           "description": "Maximum line length for the linter. Lines longer than this will be flagged as warnings."
         },
         "godotFormatter.linterIgnoredRules": {
           "type": "string",
-          "default": "",
           "description": "Comma-separated list of linter rules to ignore (e.g., 'class-name,signal-name')."
         }
       }
