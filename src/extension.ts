@@ -138,30 +138,76 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 			executable = this.gdscriptFormatterPath;
 		}
 		let cmd = `"${executable}" --stdout`;
+
+		const args = this.args.join(" ");
+		cmd += ` ${args}`
+
 		if (this.indentSize !== null) {
-			cmd += ` --indent-size=${this.indentSize}`;
+			if (args.includes("--indent-size")) {
+				outputChannel.warn(`Found "--indent-size" in "args", ignoring "indentSize"!`);
+			} else {
+				cmd += ` --indent-size=${this.indentSize}`;
+			}
 		}
+
 		if (this.maxLineLength !== null) {
-			cmd += ` --max-line-length=${this.maxLineLength}`;
+			if (args.includes("--max-line-length")) {
+				outputChannel.warn(`Found "--max-line-length" in "args", ignoring "maxLineLength"!`);
+			} else {
+				cmd += ` --max-line-length=${this.maxLineLength}`;
+			}
 		}
+
 		if (this.blankLinesAroundDefinitions !== null) {
-			cmd += ` --blank-lines-around-definitions=${this.blankLinesAroundDefinitions}`;
+			if (args.includes("--blank-lines-around-definitions")) {
+				outputChannel.warn(`Found "--blank-lines-around-definitions" in "args", ignoring "blankLinesAroundDefinitions"!`);
+			} else {
+				cmd += ` --blank-lines-around-definitions=${this.blankLinesAroundDefinitions}`;
+			}
 		}
+
 		if (this.continuationIndentLevel !== null) {
-			cmd += ` --continuation-indent-level=${this.continuationIndentLevel}`;
+			if (args.includes("--continuation-indent-level")) {
+				outputChannel.warn(`Found "--continuation-indent-level" in "args", ignoring "continuationIndentLevel"!`);
+			} else {
+				cmd += ` --continuation-indent-level=${this.continuationIndentLevel}`;
+			}
 		}
+
 		if (this.quoteStyle !== null) {
-			cmd += ` --quote-style=${this.quoteStyle}`;
+			if (args.includes("--quote-style")) {
+				outputChannel.warn(`Found "--quote-style" in "args", ignoring "quoteStyle"!`);
+			} else {
+				cmd += ` --quote-style=${this.quoteStyle}`;
+			}
 		}
+
 		if (this.useSpaces) {
-			cmd += " --use-spaces";
+			if (args.includes("--use-spaces")) {
+				outputChannel.warn(`Found "--use-spaces" in "args", ignoring "useSpaces"!`);
+			} else {
+				cmd += " --use-spaces";
+			}
 		}
-		if (this.reorderCode && !this.verifyStructure) {
-			cmd += " --reorder-code";
+
+		if (this.reorderCode) {
+			if (this.verifyStructure) {
+				outputChannel.warn(`Setting "verifyStructure" is enabled, ignoring "reorderCode"!`)
+			} else if (args.includes("--reorder-code")) {
+				outputChannel.warn(`Found "--reorder-code"" in "args", ignoring "reorderCode"!`);
+			} else {
+				cmd += " --reorder-code";
+			}
 		}
+
 		if (this.verifyStructure) {
-			cmd += " --verify-structure";
+			if (args.includes("--verify-structure")) {
+				outputChannel.warn(`Found "--verify-structure" in "args", ignoring "verifyStructure"!`);
+			} else {
+				cmd += " --verify-structure";
+			}
 		}
+
 		return cmd;
 	}
 }
