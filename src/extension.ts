@@ -7,13 +7,15 @@ import * as os from "os";
 const DEFAULT_EXECUTABLE = "gdscript-formatter";
 const BUILT_IN_BINARY_PATH = path.join(__dirname, "..", "binaries", DEFAULT_EXECUTABLE);
 
-let outputChannel: vscode.OutputChannel;
+let outputChannel: vscode.LogOutputChannel;
 let diagnosticCollection: vscode.DiagnosticCollection;
 
 
 export function activate(context: vscode.ExtensionContext) {
-	outputChannel = vscode.window.createOutputChannel("Godot Formatter");
+	outputChannel = vscode.window.createOutputChannel("Godot Formatter", { log: true });
 	diagnosticCollection = vscode.languages.createDiagnosticCollection("gdscript-lint");
+
+	outputChannel.info("Godot Formatter extension activated.");
 
 	const formatter = new GDScriptFormatter();
 	const linter = new GDScriptLinter();
@@ -193,7 +195,7 @@ class GDScriptLinter {
 			const diagnostics = await this.runLinter(document);
 			diagnosticCollection.set(document.uri, diagnostics);
 		} catch (error) {
-			outputChannel.appendLine(`Linting failed for ${document.fileName}: ${error}`);
+			outputChannel.error(`Linting failed for ${document.fileName}: ${error}`);
 			// Clear diagnostics on error
 			diagnosticCollection.delete(document.uri);
 		}
@@ -277,7 +279,7 @@ class GDScriptLinter {
 
 function handleCommandError(err: childProcess.ExecException): Error {
 	const error = new Error(`Command: ${err.cmd}, Code: ${err.code}, Error: ${err.message}`);
-	outputChannel.appendLine(`Linting failed: ${error.message}`);
+	outputChannel.error(`Linting failed: ${error.message}`);
 	return error;
 }
 
