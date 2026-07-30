@@ -274,16 +274,28 @@ class GDScriptLinter {
 		if (!this.useBuiltInBinary) {
 			executable = this.gdscriptFormatterPath;
 		}
+		let cmd = `${executable} lint "${fileName}"`;
 
-		let command = `${executable} lint "${fileName}"`;
+		const args = this.linterArgs.join(" ");
+		cmd += ` ${args}`
+
 		if (this.maxLineLength !== null) {
-			command += ` --max-line-length ${this.maxLineLength}`;
-		}
-		if (this.ignoredRules) {
-			command += ` --disable ${this.ignoredRules}`;
+			if (args.includes("--max-line-length")) {
+				outputChannel.warn(`Found "--max-line-length" in "linterArgs", ignoring "linterMaxLineLength"!`);
+			} else {
+				cmd += ` --max-line-length=${this.maxLineLength}`;
+			}
 		}
 
-		return command;
+		if (this.ignoredRules) {
+			if (args.includes("--disable")) {
+				outputChannel.warn(`Found "--disable" in "linterArgs", ignoring "linterIgnoredRules"!`);
+			} else {
+				cmd += ` --disable=${this.ignoredRules}`;
+			}
+		}
+
+		return cmd;
 	}
 
 	private parseLintOutput(output: string, document: vscode.TextDocument): vscode.Diagnostic[] {
