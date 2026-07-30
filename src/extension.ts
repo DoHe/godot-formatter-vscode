@@ -10,6 +10,22 @@ const BUILT_IN_BINARY_PATH = path.join(__dirname, "..", "binaries", DEFAULT_EXEC
 let outputChannel: vscode.LogOutputChannel;
 let diagnosticCollection: vscode.DiagnosticCollection;
 
+function conditionallyAddArgument(args: string[], cmd: string, argName: string, argValue: any = undefined): string {
+	if (args.includes(argName)) {
+		outputChannel.warn(`Found "${argName}" in "linterArgs", ignoring "linterIgnoredRules"!`);
+		return cmd;
+	}
+
+	let argString: string;
+	if (argValue) {
+		argString = `${argName}=${argValue}`;
+	} else {
+		argString = `${argName}`;
+	}
+
+	return `${cmd} ${argString}`;
+}
+
 
 export function activate(context: vscode.ExtensionContext) {
 	outputChannel = vscode.window.createOutputChannel("Godot Formatter", { log: true });
@@ -62,24 +78,19 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() { }
 
-const getUserSetting = <T>(key: string, config: vscode.WorkspaceConfiguration): T | null => {
-			const inspect = config.inspect<T>(key);
-			return inspect?.workspaceValue ?? inspect?.globalValue ?? null;
-    };
-
 
 class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private enabled: boolean = true;
-	private indentSize: number | null = null;
-	private useSpaces: boolean | null = null;
-	private reorderCode: boolean | null = null;
-	private verifyStructure: boolean | null = null;
+	private indentSize: number = -1;
+	private useSpaces: boolean = false;
+	private reorderCode: boolean = false;
+	private verifyStructure: boolean = false;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
-	private maxLineLength: number | null = null;
-	private blankLinesAroundDefinitions: number | null = null;
-	private continuationIndentLevel: number | null = null;
-	private quoteStyle: string | null = null;
+	private maxLineLength: number = -1;
+	private blankLinesAroundDefinitions: number = -1;
+	private continuationIndentLevel: number = -1;
+	private quoteStyle: string = '';
 	private args: string[] = [];
 
 	constructor() {
@@ -91,16 +102,16 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
 
 		this.enabled = config.get<boolean>("enabled", true);
-		this.indentSize = getUserSetting<number>("indentSize", config);
-		this.useSpaces = getUserSetting<boolean>("useSpaces", config);
-		this.reorderCode = getUserSetting<boolean>("reorderCode", config);
-		this.verifyStructure = getUserSetting<boolean>("verifyStructure", config);
+		this.indentSize = config.get<number>("indentSize", -1);
+		this.useSpaces = config.get<boolean>("useSpaces", false);
+		this.reorderCode = config.get<boolean>("reorderCode", false);
+		this.verifyStructure = config.get<boolean>("verifyStructure", false);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = getUserSetting<number>("maxLineLength", config);
-		this.blankLinesAroundDefinitions = getUserSetting<number>("blankLinesAroundDefinitions", config);
-		this.continuationIndentLevel = getUserSetting<number>("continuationIndentLevel", config);
-		this.quoteStyle = getUserSetting<string>("quoteStyle", config);
+		this.maxLineLength = config.get<number>("maxLineLength", -1);
+		this.blankLinesAroundDefinitions = config.get<number>("blankLinesAroundDefinitions", -1);
+		this.continuationIndentLevel = config.get<number>("continuationIndentLevel", -1);
+		this.quoteStyle = config.get<string>("quoteStyle", '').trim();
 		this.args = config.get<string[]>("args", []);
 	}
 
@@ -115,11 +126,11 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	callGDScriptFormatter(document: vscode.TextDocument): Promise<vscode.TextEdit[]> {
 		return new Promise((resolve, reject) => {
 			const cmd = this.getCommand();
-			outputChannel.info(`Run format command: '${cmd}' for file '${document.fileName}'`)
+			outputChannel.info(`Run format command: '${cmd}' for file '${document.fileName}'`);
 			const process = childProcess.exec(
 				cmd,
 				{ encoding: "utf8" },
-				(err, stdout, _) => {
+				(err: childProcess.ExecException | null, stdout: string | undefined, _stderr: string | undefined) => {
 					if (err) {
 						reject(handleCommandError(err));
 						return;
@@ -140,72 +151,42 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		let cmd = `"${executable}" --stdout`;
 
 		const args = this.args.join(" ");
-		cmd += ` ${args}`
+		cmd += ` ${args}`;
 
-		if (this.indentSize !== null) {
-			if (args.includes("--indent-size")) {
-				outputChannel.warn(`Found "--indent-size" in "args", ignoring "indentSize"!`);
-			} else {
-				cmd += ` --indent-size=${this.indentSize}`;
-			}
+		if (this.indentSize !== -1) {
+			cmd = conditionallyAddArgument(this.args, cmd, "--indent-size", this.indentSize);
 		}
 
-		if (this.maxLineLength !== null) {
-			if (args.includes("--max-line-length")) {
-				outputChannel.warn(`Found "--max-line-length" in "args", ignoring "maxLineLength"!`);
-			} else {
-				cmd += ` --max-line-length=${this.maxLineLength}`;
-			}
+		if (this.maxLineLength !== -1) {
+			cmd = conditionallyAddArgument(this.args, cmd, "--max-line-length", this.maxLineLength);
 		}
 
-		if (this.blankLinesAroundDefinitions !== null) {
-			if (args.includes("--blank-lines-around-definitions")) {
-				outputChannel.warn(`Found "--blank-lines-around-definitions" in "args", ignoring "blankLinesAroundDefinitions"!`);
-			} else {
-				cmd += ` --blank-lines-around-definitions=${this.blankLinesAroundDefinitions}`;
-			}
+		if (this.blankLinesAroundDefinitions !== -1) {
+			cmd = conditionallyAddArgument(this.args, cmd, "--blank-lines-around-definitions", this.blankLinesAroundDefinitions);
 		}
 
-		if (this.continuationIndentLevel !== null) {
-			if (args.includes("--continuation-indent-level")) {
-				outputChannel.warn(`Found "--continuation-indent-level" in "args", ignoring "continuationIndentLevel"!`);
-			} else {
-				cmd += ` --continuation-indent-level=${this.continuationIndentLevel}`;
-			}
+		if (this.continuationIndentLevel !== -1) {
+			cmd = conditionallyAddArgument(this.args, cmd, "--continuation-indent-level", this.continuationIndentLevel);
 		}
 
-		if (this.quoteStyle !== null) {
-			if (args.includes("--quote-style")) {
-				outputChannel.warn(`Found "--quote-style" in "args", ignoring "quoteStyle"!`);
-			} else {
-				cmd += ` --quote-style=${this.quoteStyle}`;
-			}
+		if (this.quoteStyle !== '') {
+			cmd = conditionallyAddArgument(this.args, cmd, "--quote-style", this.quoteStyle);
 		}
 
 		if (this.useSpaces) {
-			if (args.includes("--use-spaces")) {
-				outputChannel.warn(`Found "--use-spaces" in "args", ignoring "useSpaces"!`);
-			} else {
-				cmd += " --use-spaces";
-			}
+			cmd = conditionallyAddArgument(this.args, cmd, "--use-spaces");
 		}
 
 		if (this.reorderCode) {
 			if (this.verifyStructure) {
-				outputChannel.warn(`Setting "verifyStructure" is enabled, ignoring "reorderCode"!`)
-			} else if (args.includes("--reorder-code")) {
-				outputChannel.warn(`Found "--reorder-code"" in "args", ignoring "reorderCode"!`);
+				outputChannel.warn(`Setting "verifyStructure" is enabled, ignoring "reorderCode"!`);
 			} else {
-				cmd += " --reorder-code";
+				cmd = conditionallyAddArgument(this.args, cmd, "--reorder-code");
 			}
 		}
 
 		if (this.verifyStructure) {
-			if (args.includes("--verify-structure")) {
-				outputChannel.warn(`Found "--verify-structure" in "args", ignoring "verifyStructure"!`);
-			} else {
-				cmd += " --verify-structure";
-			}
+			cmd = conditionallyAddArgument(this.args, cmd, "--verify-structure");
 		}
 
 		return cmd;
@@ -216,7 +197,7 @@ class GDScriptLinter {
 	private enabled: boolean = true;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
-	private maxLineLength: number | null = null;
+	private maxLineLength: number = -1;
 	private ignoredRules: string = "";
 	private linterArgs: string[] = [];
 
@@ -230,7 +211,7 @@ class GDScriptLinter {
 		this.enabled = config.get<boolean>("enableLinter", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = getUserSetting<number>("linterMaxLineLength", config);
+		this.maxLineLength = config.get<number>("linterMaxLineLength", -1);
 		this.ignoredRules = config.get<string>("linterIgnoredRules", "").trim();
 		this.linterArgs = config.get<string[]>("linterArgs", []);
 	}
@@ -254,18 +235,21 @@ class GDScriptLinter {
 	private runLinter(document: vscode.TextDocument): Promise<vscode.Diagnostic[]> {
 		return new Promise((resolve, reject) => {
 			const command = this.getLintCommand(document.fileName);
-			outputChannel.info(`Run lint command: '${command}'`)
+			outputChannel.info(`Run lint command: '${command}'`);
 
-			childProcess.exec(command, { encoding: "utf8" }, (err, stdout, stderr) => {
-				if (err && err.code !== 1) {
-					// Code 1 is expected when there are lint issues, other codes are actual errors
-					reject(new Error(`Linter command failed: ${err.message}`));
-					return;
-				}
+			childProcess.exec(
+				command,
+				{ encoding: "utf8" },
+				(err: childProcess.ExecException | null, stdout: string | undefined, stderr: string | undefined) => {
+					if (err && err.code !== 1) {
+						// Code 1 is expected when there are lint issues, other codes are actual errors
+						reject(new Error(`Linter command failed: ${err.message}`));
+						return;
+					}
 
-				const diagnostics = this.parseLintOutput(stdout, document);
-				resolve(diagnostics);
-			});
+					const diagnostics = this.parseLintOutput(stdout, document);
+					resolve(diagnostics);
+				});
 		});
 	}
 
@@ -277,31 +261,23 @@ class GDScriptLinter {
 		let cmd = `${executable} lint "${fileName}"`;
 
 		const args = this.linterArgs.join(" ");
-		cmd += ` ${args}`
+		cmd += ` ${args}`;
 
-		if (this.maxLineLength !== null) {
-			if (args.includes("--max-line-length")) {
-				outputChannel.warn(`Found "--max-line-length" in "linterArgs", ignoring "linterMaxLineLength"!`);
-			} else {
-				cmd += ` --max-line-length=${this.maxLineLength}`;
-			}
+		if (this.maxLineLength !== -1) {
+			cmd = conditionallyAddArgument(this.linterArgs, cmd, "--max-line-length", this.maxLineLength);
 		}
 
 		if (this.ignoredRules) {
-			if (args.includes("--disable")) {
-				outputChannel.warn(`Found "--disable" in "linterArgs", ignoring "linterIgnoredRules"!`);
-			} else {
-				cmd += ` --disable=${this.ignoredRules}`;
-			}
+			cmd = conditionallyAddArgument(this.linterArgs, cmd, "--disable", this.ignoredRules);
 		}
 
 		return cmd;
 	}
 
-	private parseLintOutput(output: string, document: vscode.TextDocument): vscode.Diagnostic[] {
+	private parseLintOutput(output: string | undefined, document: vscode.TextDocument): vscode.Diagnostic[] {
 		const diagnostics: vscode.Diagnostic[] = [];
 
-		if (!output.trim()) {
+		if (!output?.trim()) {
 			return diagnostics;
 		}
 
@@ -345,7 +321,11 @@ function handleCommandError(err: childProcess.ExecException): Error {
 	return error;
 }
 
-function handleCommandSuccess(stdout: string, document: vscode.TextDocument) {
+function handleCommandSuccess(stdout: string | undefined, document: vscode.TextDocument) {
+	if (stdout === undefined) {
+		outputChannel.error("Formatter returned no output.");
+		return [];
+	}
 	var fullReplace = vscode.TextEdit.replace(
 		new vscode.Range(
 			new vscode.Position(0, 0),

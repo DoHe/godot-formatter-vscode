@@ -88,42 +88,58 @@
         },
         "godotFormatter.useSpaces": {
           "type": "boolean",
+          "default": false,
           "description": "Whether to use spaces. If disabled will use tabs."
         },
         "godotFormatter.indentSize": {
           "type": "integer",
-          "description": "How many spaces to use for indentation. This is only used if `useSpaces` is enabled"
+          "default": -1,
+          "description": "How many spaces to use for indentation. This is only used if `useSpaces` is enabled. -1 uses the formatter's default value."
         },
         "godotFormatter.reorderCode": {
           "type": "boolean",
+          "default": false,
           "description": "Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if verifyStructure is disabled."
         },
         "godotFormatter.verifyStructure": {
           "type": "boolean",
+          "default": false,
           "description": "Whether to verify formatted output has the same structure as the input. If this enabled, `reorderCode` is ignored. Slightly less performant."
         },
         "godotFormatter.maxLineLength": {
           "type": "integer",
-          "description": "Maximum line length for the formatter. Lines longer than this will be wrapped."
+          "default": -1,
+          "description": "Maximum line length for the formatter. Lines longer than this will be wrapped. -1 uses the formatter's default value."
         },
         "godotFormatter.blankLinesAroundDefinitions": {
           "type": "integer",
-          "description": "Blank lines between top-level definitions"
+          "default": -1,
+          "description": "Blank lines between top-level definitions. -1 uses the formatter's default value."
         },
         "godotFormatter.continuationIndentLevel": {
           "type": "integer",
-          "description": "Extra indent for line continuations."
+          "default": -1,
+          "description": "Extra indent for line continuations. -1 uses the formatter's default value."
         },
         "godotFormatter.quoteStyle": {
           "type": "string",
-          "description": "Quote style for strings. Must be 'single', 'double' or 'preserve'."
+          "default": "",
+          "enum": [
+            "single",
+            "double",
+            "preserve",
+            ""
+          ],
+          "description": "Quote style for strings. Must be 'single', 'double' or 'preserve'. Leave this empty for the formatter's default value."
         },
         "godotFormatter.linterMaxLineLength": {
           "type": "integer",
-          "description": "Maximum line length for the linter. Lines longer than this will be flagged as warnings."
+          "default": -1,
+          "description": "Maximum line length for the linter. Lines longer than this will be flagged as warnings. -1 uses the formatter's default value."
         },
         "godotFormatter.linterIgnoredRules": {
           "type": "string",
+          "default": "",
           "description": "Comma-separated list of linter rules to ignore (e.g., 'class-name,signal-name')."
         }
       }
