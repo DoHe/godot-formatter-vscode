@@ -2,6 +2,12 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.5.1] - 2026-07-30
+
+### Changed
+
+- Use `null` as default value for integer config options
+
 ## [0.5.0] - 2026-07-30
 
 ### Added

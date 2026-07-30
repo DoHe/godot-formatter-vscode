@@ -2,7 +2,7 @@
   "name": "godot-format",
   "displayName": "godot-format",
   "description": "A formatter and linter for Godot/GDScript using GDQuest's gdscript formatter",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "engines": {
     "vscode": "^1.104.0"
   },
@@ -92,9 +92,12 @@
           "description": "Whether to use spaces. If disabled will use tabs."
         },
         "godotFormatter.indentSize": {
-          "type": "integer",
-          "default": -1,
-          "description": "How many spaces to use for indentation. This is only used if `useSpaces` is enabled. -1 uses the formatter's default value."
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "How many spaces to use for indentation. This is only used if `useSpaces` is enabled. Leave empty for the formatter's default value."
         },
         "godotFormatter.reorderCode": {
           "type": "boolean",
@@ -107,19 +110,28 @@
           "description": "Whether to verify formatted output has the same structure as the input. If this enabled, `reorderCode` is ignored. Slightly less performant."
         },
         "godotFormatter.maxLineLength": {
-          "type": "integer",
-          "default": -1,
-          "description": "Maximum line length for the formatter. Lines longer than this will be wrapped. -1 uses the formatter's default value."
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "Maximum line length for the formatter. Lines longer than this will be wrapped. Leave empty for the formatter's default value."
         },
         "godotFormatter.blankLinesAroundDefinitions": {
-          "type": "integer",
-          "default": -1,
-          "description": "Blank lines between top-level definitions. -1 uses the formatter's default value."
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "Blank lines between top-level definitions. Leave empty for the formatter's default value."
         },
         "godotFormatter.continuationIndentLevel": {
-          "type": "integer",
-          "default": -1,
-          "description": "Extra indent for line continuations. -1 uses the formatter's default value."
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "Extra indent for line continuations. Leave empty for the formatter's default value."
         },
         "godotFormatter.quoteStyle": {
           "type": "string",
@@ -133,9 +145,12 @@
           "description": "Quote style for strings. Must be 'single', 'double' or 'preserve'. Leave this empty for the formatter's default value."
         },
         "godotFormatter.linterMaxLineLength": {
-          "type": "integer",
-          "default": -1,
-          "description": "Maximum line length for the linter. Lines longer than this will be flagged as warnings. -1 uses the formatter's default value."
+          "type": [
+            "integer",
+            "null"
+          ],
+          "default": null,
+          "description": "Maximum line length for the linter. Lines longer than this will be flagged as warnings. Leave empty for the formatter's default value."
         },
         "godotFormatter.linterIgnoredRules": {
           "type": "string",

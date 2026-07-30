@@ -81,15 +81,15 @@ export function deactivate() { }
 
 class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	private enabled: boolean = true;
-	private indentSize: number = -1;
+	private indentSize: number | null = null;
 	private useSpaces: boolean = false;
 	private reorderCode: boolean = false;
 	private verifyStructure: boolean = false;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
-	private maxLineLength: number = -1;
-	private blankLinesAroundDefinitions: number = -1;
-	private continuationIndentLevel: number = -1;
+	private maxLineLength: number | null = null;
+	private blankLinesAroundDefinitions: number | null = null;
+	private continuationIndentLevel: number | null = null;
 	private quoteStyle: string = '';
 	private args: string[] = [];
 
@@ -102,15 +102,15 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		const config = vscode.workspace.getConfiguration("godotFormatter");
 
 		this.enabled = config.get<boolean>("enabled", true);
-		this.indentSize = config.get<number>("indentSize", -1);
+		this.indentSize = config.get<number | null>("indentSize", null);
 		this.useSpaces = config.get<boolean>("useSpaces", false);
 		this.reorderCode = config.get<boolean>("reorderCode", false);
 		this.verifyStructure = config.get<boolean>("verifyStructure", false);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = config.get<number>("maxLineLength", -1);
-		this.blankLinesAroundDefinitions = config.get<number>("blankLinesAroundDefinitions", -1);
-		this.continuationIndentLevel = config.get<number>("continuationIndentLevel", -1);
+		this.maxLineLength = config.get<number | null>("maxLineLength", null);
+		this.blankLinesAroundDefinitions = config.get<number | null>("blankLinesAroundDefinitions", null);
+		this.continuationIndentLevel = config.get<number | null>("continuationIndentLevel", null);
 		this.quoteStyle = config.get<string>("quoteStyle", '').trim();
 		this.args = config.get<string[]>("args", []);
 	}
@@ -153,19 +153,19 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 		const args = this.args.join(" ");
 		cmd += ` ${args}`;
 
-		if (this.indentSize !== -1) {
+		if (this.indentSize !== null) {
 			cmd = conditionallyAddArgument(this.args, cmd, "--indent-size", this.indentSize);
 		}
 
-		if (this.maxLineLength !== -1) {
+		if (this.maxLineLength !== null) {
 			cmd = conditionallyAddArgument(this.args, cmd, "--max-line-length", this.maxLineLength);
 		}
 
-		if (this.blankLinesAroundDefinitions !== -1) {
+		if (this.blankLinesAroundDefinitions !== null) {
 			cmd = conditionallyAddArgument(this.args, cmd, "--blank-lines-around-definitions", this.blankLinesAroundDefinitions);
 		}
 
-		if (this.continuationIndentLevel !== -1) {
+		if (this.continuationIndentLevel !== null) {
 			cmd = conditionallyAddArgument(this.args, cmd, "--continuation-indent-level", this.continuationIndentLevel);
 		}
 
@@ -197,7 +197,7 @@ class GDScriptLinter {
 	private enabled: boolean = true;
 	private gdscriptFormatterPath: string = DEFAULT_EXECUTABLE;
 	private useBuiltInBinary: boolean = true;
-	private maxLineLength: number = -1;
+	private maxLineLength: number | null = null;
 	private ignoredRules: string = "";
 	private linterArgs: string[] = [];
 
@@ -211,7 +211,7 @@ class GDScriptLinter {
 		this.enabled = config.get<boolean>("enableLinter", true);
 		this.gdscriptFormatterPath = config.get<string>("gdscriptFormatterPath", DEFAULT_EXECUTABLE).trim() || DEFAULT_EXECUTABLE;
 		this.useBuiltInBinary = config.get<boolean>("useBuiltInBinary", true);
-		this.maxLineLength = config.get<number>("linterMaxLineLength", -1);
+		this.maxLineLength = config.get<number | null>("linterMaxLineLength", null);
 		this.ignoredRules = config.get<string>("linterIgnoredRules", "").trim();
 		this.linterArgs = config.get<string[]>("linterArgs", []);
 	}
@@ -263,7 +263,7 @@ class GDScriptLinter {
 		const args = this.linterArgs.join(" ");
 		cmd += ` ${args}`;
 
-		if (this.maxLineLength !== -1) {
+		if (this.maxLineLength !== null) {
 			cmd = conditionallyAddArgument(this.linterArgs, cmd, "--max-line-length", this.maxLineLength);
 		}
 
