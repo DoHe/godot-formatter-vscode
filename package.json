@@ -70,6 +70,22 @@
           "default": "",
           "description": "The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH. If using PATH, make sure to remove the architecture/platform suffix if you copied the binary from the releases page. Only used if useBuiltInBinary is false."
         },
+        "godotFormatter.args": {
+          "default": [],
+          "markdownDescription": "Additional command-line arguments to pass to `gdscript-formatter`. Arguments passed here take precedence over other settings! E.g. setting `\"args\": [\"--max-line-length=80\"]` and `\"maxLineLength\": 100` would result in 80.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "godotFormatter.argsLinter": {
+          "default": [],
+          "markdownDescription": "Additional command-line arguments to pass to `gdscript-formatter lint`. Arguments passed here take precedence over other settings! E.g. setting `\"args\": [\"--max-line-length=80\"]` and `\"linterMaxLineLength\": 100` would result in 80.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "godotFormatter.useSpaces": {
           "type": "boolean",
           "description": "Whether to use spaces. If disabled will use tabs."
