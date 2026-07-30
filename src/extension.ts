@@ -113,7 +113,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 	callGDScriptFormatter(document: vscode.TextDocument): Promise<vscode.TextEdit[]> {
 		return new Promise((resolve, reject) => {
 			const cmd = this.getCommand();
-			outputChannel.appendLine(`Run format command: '${cmd}' for file '${document.fileName}'`)
+			outputChannel.info(`Run format command: '${cmd}' for file '${document.fileName}'`)
 			const process = childProcess.exec(
 				cmd,
 				{ encoding: "utf8" },
@@ -204,7 +204,7 @@ class GDScriptLinter {
 	private runLinter(document: vscode.TextDocument): Promise<vscode.Diagnostic[]> {
 		return new Promise((resolve, reject) => {
 			const command = this.getLintCommand(document.fileName);
-			outputChannel.appendLine(`Run lint command: '${command}'`)
+			outputChannel.info(`Run lint command: '${command}'`)
 
 			childProcess.exec(command, { encoding: "utf8" }, (err, stdout, stderr) => {
 				if (err && err.code !== 1) {
