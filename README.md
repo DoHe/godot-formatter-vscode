@@ -25,17 +25,21 @@ This extension supports the following settings:
 - `godotFormatter.gdscriptFormatterPath`:The path to the gdscript formatter executable. Leave this empty if it's in your system's PATH. If using PATH, make sure to remove the architecture/platform suffix if you copied the binary from the releases page. Only used if useBuiltInBinary is false.
 - `godotFormatter.useSpaces`: Whether to use spaces. If disabled will use tabs.
 - `godotFormatter.indentSize`: How many spaces to use for indentation. This is only used if `useSpaces` is enabled
-- `godotFormatter.reorderCode`:Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if safe mode is disabled.
+- `godotFormatter.reorderCode`:Whether to allow reordering code blocks, like exported variables vs constants etc. This only applies if verify structure is disabled.
 - `godotFormatter.verifyStructure`: Whether to verify formatted output has the same structure as the input. If this enabled, `reorderCode` is ignored. Slightly less performant.
 - `godotFormatter.maxLineLength`: Maximum line length for the formatter. Lines longer than this will be wrapped.
 - `godotFormatter.blankLinesAroundDefinitions`: Blank lines between top-level definitions
 - `godotFormatter.continuationIndentLevel`: Extra indent for line continuations.
 - `godotFormatter.quoteStyle`: Quote style for strings. Must be 'single', 'double' or 'preserve'.
 - `godotFormatter.enableLinter`: Enable/disable linting with this extension
-- `godotFormatter.linterMaxLineLength`: Configure the maximum line length for the liner. Default: 100.
+- `godotFormatter.linterMaxLineLength`: Configure the maximum line length for the liner.
 - `godotFormatter.linterIgnoredRules`: Comma-separated list of rules to ignore.
   - [See the GDScript-formatter README](https://github.com/GDQuest/GDScript-formatter) for a full list of rules
   - _NOTE:_ Rules can also be ignored with a `# gdlint-ignore-next-line (rules)` above a line or `# gdlint-ignore (rules)` next to a line.
+- `godotFormatter.args`: Specify the arguments passed to the formatter directly. These take precedence over any conflicting settings you set via vscode settings.
+- `godotFormatter.argsLinter`: Specify the arguments passed to the linter directly. These take precedence over any conflicting settings you set via vscode settings.
+
+All these settings have default values that preserve the underlying formatters defaults, you can freely override them though.
 
 ## Known Issues
 

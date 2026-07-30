@@ -2,6 +2,16 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.5.0] - 2026-07-30
+
+### Added
+
+- Add the options to specify formatter arguments directly
+
+### Changed
+
+- Change defaults so that they don't override the formatter's built-in defaults
+
 ## [0.4.1] - 2026-07-26
 
 ### Updated
