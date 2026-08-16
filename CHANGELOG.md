@@ -2,6 +2,14 @@
 
 All notable changes to the "godot-format" extension will be documented in this file.
 
+## [0.5.2] - 2026-08-16
+
+### Fixed
+
+- Run formatter in context of current file so .editorconfig is respected
+- Do not add extra trailing empty lines in some cases
+
+
 ## [0.5.1] - 2026-07-30
 
 ### Changed
