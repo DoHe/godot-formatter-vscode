@@ -2,7 +2,6 @@ import * as path from 'node:path';
 
 import * as vscode from 'vscode';
 import * as childProcess from "child_process";
-import * as os from "os";
 
 const DEFAULT_EXECUTABLE = "gdscript-formatter";
 const BUILT_IN_BINARY_PATH = path.join(__dirname, "..", "binaries", DEFAULT_EXECUTABLE);
@@ -142,7 +141,7 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 				}
 			);
 			process.stdin?.write(document.getText());
-			process.stdin?.end(os.EOL);
+			process.stdin?.end();
 		});
 	}
 
