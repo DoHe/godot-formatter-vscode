@@ -129,7 +129,10 @@ class GDScriptFormatter implements vscode.DocumentFormattingEditProvider {
 			outputChannel.info(`Run format command: '${cmd}' for file '${document.fileName}'`);
 			const process = childProcess.exec(
 				cmd,
-				{ encoding: "utf8" },
+				{
+					encoding: "utf8",
+					cwd: vscode.workspace.getWorkspaceFolder(document.uri)?.uri.fsPath,
+				},
 				(err: childProcess.ExecException | null, stdout: string | undefined, _stderr: string | undefined) => {
 					if (err) {
 						reject(handleCommandError(err));
@@ -239,7 +242,10 @@ class GDScriptLinter {
 
 			childProcess.exec(
 				command,
-				{ encoding: "utf8" },
+				{
+					encoding: "utf8",
+					cwd: vscode.workspace.getWorkspaceFolder(document.uri)?.uri.fsPath,
+				},
 				(err: childProcess.ExecException | null, stdout: string | undefined, stderr: string | undefined) => {
 					if (err && err.code !== 1) {
 						// Code 1 is expected when there are lint issues, other codes are actual errors
